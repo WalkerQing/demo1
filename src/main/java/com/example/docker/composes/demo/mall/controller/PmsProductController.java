@@ -85,8 +85,7 @@ public class PmsProductController {
         @RequestParam(value = "pageSize", defaultValue = "3")
         @ApiParam("每页数量") Integer pageSize) {
         IPage<PmsProduct> page = new Page<>(pageNum,pageSize);
-        IPage<PmsProduct> resultPage = pmsProductService.page(page);
-        return CommonResult.success(resultPage);
+        return CommonResult.success(pmsProductService.page(page,null));
     }
 
 
