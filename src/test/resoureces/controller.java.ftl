@@ -3,11 +3,13 @@ package ${package.Controller};
 <#if swagger2>
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 </#if>
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.docker.composes.demo.mall.common.api.CommonPage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import com.example.docker.composes.demo.mall.common.api.CommonResult;
 
 
@@ -48,7 +50,7 @@ public class ${table.controllerName} extends ${superControllerClass} {
     <#else>
 public class ${table.controllerName} {
     </#if>
-            <#assign service=table.serviceName?substring(1)?uncap_first/>
+    <#assign service=table.serviceName?substring(1)?uncap_first/>
     @Autowired
     ${table.serviceName} ${service};
 
@@ -82,6 +84,15 @@ public class ${table.controllerName} {
         return commonResult;
     }
 
+    @ApiOperation("update ${entity}")
+    @PostMapping("update")
+    public CommonResult update${entity}(${entity} ${entity?uncap_first}){
+        CommonResult<String> commonResult;
+        boolean result = ${service}.updateById(${entity?uncap_first});
+        commonResult = result ? CommonResult.success("修改成功") : CommonResult.failed();
+        return commonResult;
+    }
+
     @ApiOperation("delete ${entity}")
     @PostMapping("delete")
     public CommonResult delete${entity}(Long id){
@@ -89,7 +100,18 @@ public class ${table.controllerName} {
         boolean result = ${service}.removeById(id);
         commonResult = result ? CommonResult.success("删除成功") : CommonResult.failed();
         return commonResult;
+    } 
+    @ApiOperation("page ${entity} list")
+    @PostMapping("/page")
+    public CommonResult<IPage> page(@RequestParam(value = "pageNum", defaultValue = "1")
+        @ApiParam("页码") Integer pageNum,
+        @RequestParam(value = "pageSize", defaultValue = "3")
+        @ApiParam("每页数量") Integer pageSize) {
+        IPage<${entity}> page = new Page<>(pageNum,pageSize);
+        IPage<${entity}> resultPage = ${service}.page(page);
+        return CommonResult.success(resultPage);
     }
+
 
 }
 

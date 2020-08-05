@@ -40,7 +40,7 @@ public class PmsBrandController {
     }
 
 
-    @PreAuthorize("hasAuthority('pms:brand:read')")
+
     @ApiOperation("PmsBrand list")
     @GetMapping("listPmsBrand")
     public CommonResult listPmsBrand(){
@@ -56,6 +56,7 @@ public class PmsBrandController {
     public CommonResult savePmsBrand(PmsBrand pmsBrand){
         CommonResult<String> commonResult;
         boolean result = pmsBrandService.save(pmsBrand);
+
         commonResult = result ? CommonResult.success("插入成功") : CommonResult.failed();
         return commonResult;
     }
