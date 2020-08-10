@@ -22,7 +22,18 @@ spring:
         enabled: true
     rest:
       uris: http://localhost:9200
-
+    mongodb:
+      host: ${url} # mongodb的连接地址
+      port: 27017 # mongodb的连接端口号
+      database: mall-port # mongodb的连接的数据库
+      username: 'qy'
+      password: '123456'
+  rabbitmq:
+    host: ${url} # rabbitmq的连接地址
+    port: 5672 # rabbitmq的连接端口号
+    virtual-host: /mall # rabbitmq的虚拟host
+    username: qy # rabbitmq的用户名
+    password: 123 # rabbitmq的密码
 
 # 自定义redis key
 redis:
